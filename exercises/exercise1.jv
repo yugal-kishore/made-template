@@ -1,5 +1,3 @@
-
-
 pipeline Exercise1{
 
     fileExtractor
@@ -34,10 +32,10 @@ pipeline Exercise1{
             "Latitude" oftype decimal,
             "Longitude" oftype decimal,
             "Altitude" oftype decimal,
-            "Zeitone" oftype text,
-            "DST" oftype text,
-            "Zeitzonen-Datenbabk" oftype text,
-            "geo-punkt" oftype text,
+            "Zeitzone" oftype text,
+            "DST" oftype text, 
+            "Zeitzonen-Datenbank" oftype text,
+            "geo_punkt" oftype text,
         ];
         }
 
