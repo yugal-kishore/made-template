@@ -41,6 +41,6 @@ pipeline Exercise1{
 
     block outputloader oftype SQLiteLoader{
         table: "airports";
-        file: "airports.sqlite";
+        file: "./airports.sqlite";
         }
 }
