@@ -26,7 +26,7 @@ pipeline Exercise2{
             "standort" oftype text,
             "baumart_botanisch" oftype text,
             "baumart_deutsch" oftype text, 
-            "id" oftype text,
+            "id" oftype filter2,
             "baumfamilie" oftype text,
         ];
     }
@@ -47,4 +47,17 @@ pipeline Exercise2{
     }
     constraint onlyfurth oftype AllowlistConstraint{
     allowlist: ["Furth Süd", "Furth-Nord", "Furth-Mitte","Furth-Süd"];}
+    
+    valuetype filter2 oftype decimal{
+        constraints:[
+            geopointrange,
+        ];
+    }
+    constraint geopointrange oftype RangeConstraint{
+        lowerBound:1;
+        upperBound:999;
+        upperBoundInclusive: true;
+    }
+ 
+
 }
