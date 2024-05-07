@@ -6,34 +6,41 @@ pipeline Exercise2{
     -> outputloader;
     
     block dataextractor oftype HttpExtractor{
-        url: 'https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/stadt-neuss-herbstpflanzung-2023/exports/csv';     
-
+        url: 'https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/stadt-neuss-herbstpflanzung-2023/exports/csv';
     }
-    block txtfileinterpretor oftype TextFileInterpreter{
 
+    block txtfileinterpretor oftype TextFileInterpreter{
     }
 
     block csvformat oftype CSVInterpreter{
-        delimiter:',';
+        delimiter:';';
+        enclosingEscape:'""';
     }
+
     block tableinterpretor oftype TableInterpreter{
         header: true;
         columns:[
             "lfd_nr" oftype integer,
-            "stadtteil" oftype text,
+            "stadtteil" oftype filter1,
             "standort" oftype text,
             "baumart_botanisch" oftype text,
             "baumart_deutsch" oftype text, 
             "id" oftype text,
-            "baumfamilie" oftype decimal,
-
-
-
+            "baumfamilie" oftype text,
         ];
     }
+
     block outputloader oftype SQLiteLoader{
         table:"trees";
         file: "trees.sqlite";
     }
 
+    valuetype filter1 oftype text{
+        constraints:[
+            onlyfurth,
+        ];
+    }
+
+    constraint onlyfurth oftype AllowlistConstraint{
+    allowlist: ["Furth Süd", "Furth-Nord", "Furth-Mitte","Furth-Süd"];}
 }
