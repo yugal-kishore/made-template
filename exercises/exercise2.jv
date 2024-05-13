@@ -45,8 +45,8 @@ pipeline Exercise2{
             onlyfurth,
         ];
     }
-    constraint onlyfurth oftype AllowlistConstraint{
-    allowlist: ["Furth Süd", "Furth-Nord", "Furth-Mitte","Furth-Süd"];}
+    constraint onlyfurth oftype RegexConstraint{
+    regex: /Furth-(.+)/;}
     
     valuetype filter2 oftype text{
         constraints:[
