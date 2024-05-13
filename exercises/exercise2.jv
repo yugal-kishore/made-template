@@ -1,60 +1,60 @@
-pipeline PlantedTreesPipeline {
+pipeline Exercise2{
+    dataextractor
+    -> txtfileinterpretor
+    -> csvformat
+    -> coldel
+    -> tableinterpretor
+    -> outputloader;
+    
+    block dataextractor oftype HttpExtractor{
+        url: 'https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/stadt-neuss-herbstpflanzung-2023/exports/csv';
 
-    PlantedTreesExtractor 
-        -> PlantedTreesTextFileInterpreter
-        -> PlantedTreesCSVInterpreter
-        -> BaumartDeutschDeleter
-        -> PlantedTreesTableInterpreter
-        -> PlantedTreesLoader;
-
-    block PlantedTreesExtractor oftype HttpExtractor {
-        url: "https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/stadt-neuss-herbstpflanzung-2023/exports/csv";
+    }
+    block txtfileinterpretor oftype TextFileInterpreter{
     }
 
-    block PlantedTreesTextFileInterpreter oftype TextFileInterpreter { }
-
-    block PlantedTreesCSVInterpreter oftype CSVInterpreter {
-        delimiter: ';';
-        enclosing: '"';
+    block csvformat oftype CSVInterpreter{
+        delimiter:';';
+        enclosingEscape:'"';
     }
 
-    block BaumartDeutschDeleter oftype ColumnDeleter {
+  block coldel oftype ColumnDeleter{
         delete: [column E];
     }
 
-    valuetype GeoCoordinateId oftype text {
-        constraints: [ AlwaysTwoGeoCoordinates ];
-    } 
-
-    // coordinates as {geo-coordinate 1}, {geo-coordinate 2} 
-    constraint AlwaysTwoGeoCoordinates oftype RegexConstraint {
+    valuetype filter1 oftype text{
+        constraints:[
+            onlyfurth
+        ];
+    }
+    constraint onlyfurth oftype RegexConstraint{
+    regex: /Furth-(.+)/;
+    }
+    
+    valuetype filter2 oftype text{
+        constraints:[
+            geopointrange
+        ];
+    }
+    constraint geopointrange oftype RegexConstraint{
         regex: /\d{1,3}\.\d+\, \d{1,3}\.\d+/;
     }
 
-    valuetype StadtTeil oftype text {
-        constraints: [ OnlyFurth ];
-    }
-    
-    constraint OnlyFurth oftype RegexConstraint {
-        regex: /Furth-(.+)/;
-    }
-
-    block PlantedTreesTableInterpreter oftype TableInterpreter {
+    block tableinterpretor oftype TableInterpreter{
         header: true;
-        columns: [
+        columns:[
             "lfd_nr" oftype integer,
-            "id" oftype GeoCoordinateId,
-            "stadtteil" oftype StadtTeil,
+            "stadtteil" oftype filter1,
             "standort" oftype text,
             "baumart_botanisch" oftype text,
-            // "baumart_deutsch" oftype text, -- not wanted in result
+            "baumart_deutsch" oftype text, 
+            "id" oftype filter2,
             "baumfamilie" oftype text,
         ];
     }
 
-    block PlantedTreesLoader oftype SQLiteLoader {
-        table: "trees";
+    block outputloader oftype SQLiteLoader{
+        table:"trees";
         file: "./trees.sqlite";
     }
-
 }
