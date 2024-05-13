@@ -54,6 +54,6 @@ pipeline Exercise2{
         ];
     }
     constraint geopointrange oftype RegexConstraint{
-        regex:/^(\d{1,3}\.\d+),(\d{1,3}\.\d+)$/;
+        regex: /\d{1,3}\.\d+\, \d{1,3}\.\d+/;
     }
 }
