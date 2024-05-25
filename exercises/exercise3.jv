@@ -1,0 +1,57 @@
+pipeline GoodsTransported{
+    ip ->
+    txt ->
+    csv ->
+    rowdel ->
+    cellwriter1 ->
+    cellwriter2 ->
+    table ->
+    op;
+
+block ip oftype HttpExtractor{
+    url:'https://www-genesis.destatis.de/genesis/downloads/00/tables/46131-0014_00.csv';
+}
+
+block txt oftype TextFileInterpreter{
+    encoding:'latin3';
+    }
+
+block csv oftype CSVInterpreter{
+    delimiter:';';
+    enclosingEscape:'"';
+}
+
+block rowdel oftype RowDeleter{
+    delete:[row 1,row 2,row 3, row 4, row 5, row 6, row 7, row 41338, row 41339];
+}
+
+
+block cellwriter1 oftype CellWriter{
+    at:range A1:E1;
+    write:['year', 'month', 'goods_id', 'goods_name', 'goods_source'];
+}
+
+block cellwriter2 oftype CellWriter{
+    at: range AT1: AU1;
+    write:[ 'abroad', 'total'];
+}
+
+block table oftype TableInterpreter{
+    header:true;
+    columns:
+    [
+        'year' oftype text,
+        'month' oftype text,
+        'goods_id' oftype text,
+        'goods_name' oftype text,
+        'goods_source' oftype text,
+        'abroad' oftype text,
+        'total' oftype text,
+    ]
+    ;
+}
+block op oftype SQLiteLoader{
+    file:'./goodsTransportedByTrain.sqlite';
+    table: "goods";
+}
+}
