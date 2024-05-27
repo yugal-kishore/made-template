@@ -77,7 +77,7 @@ constraint regex_constraint_2 oftype RegexConstraint{
 
 
 block op oftype SQLiteLoader{
-    file:'./goodsTransportedByTrain.sqlite';
+    file:'goodsTransportedByTrain.sqlite';
     table: "goods";
 }
 }
