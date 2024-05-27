@@ -36,6 +36,7 @@ pipeline Exercise1{
             "DST" oftype text, 
             "Zeitzonen-Datenbank" oftype text,
             "geo_punkt" oftype text,
+
         ];
         }
 
