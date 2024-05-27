@@ -46,7 +46,7 @@ block table oftype TableInterpreter{
         'goods_id' oftype regex_2,
         'goods_name' oftype text,
         'goods_source' oftype text,
-        'abroad' oftype text,
+        'abroad' oftype onlypositive,
         'total' oftype onlypositive,
     ]
     ;
