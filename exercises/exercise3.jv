@@ -1,4 +1,4 @@
-pipeline exercise3{
+pipeline goodstransportpipeline{
     ip ->
     txt ->
     csv ->
@@ -53,7 +53,7 @@ block table oftype TableInterpreter{
 }
 
 valuetype onlypositive oftype integer{
-    constraints : [rangeconstraint];    
+    constraints : [rangeconstraint,];    
 }
 constraint rangeconstraint oftype RangeConstraint{
     lowerBound:0;
@@ -61,23 +61,22 @@ constraint rangeconstraint oftype RangeConstraint{
 }
 
 valuetype regex_1 oftype text{
-    constraints : [regex_constraint_1];
+    constraints : [regex_constraint_1,];
 }
 constraint regex_constraint_1 oftype RegexConstraint{
     regex: /\b(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktber|November|Dezember)\b/;
 }
 
 valuetype regex_2 oftype text{
-    constraints:[regex_constraint_2];
+    constraints:[regex_constraint_2,];
 }
 constraint regex_constraint_2 oftype RegexConstraint{
-    regex: /^NST7-[0-9A-]{3}$/;
+    regex: /^NST7-[0-9A-Z]{3}$/;
 }
 
-
-
 block op oftype SQLiteLoader{
-    file:'goodsTransportedByTrain.sqlite';
     table: "goods";
+    file:'./goodsTransportedByTrain.sqlite';
+
 }
 }
