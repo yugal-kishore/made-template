@@ -1,4 +1,4 @@
-pipeline GoodsTransported{
+pipeline exercise3{
     ip ->
     txt ->
     csv ->
@@ -18,8 +18,9 @@ block txt oftype TextFileInterpreter{
 
 block csv oftype CSVInterpreter{
     delimiter:';';
-    enclosingEscape:'"';
+    enclosingEscape:'"'; 
 }
+
 
 block rowdel oftype RowDeleter{
     delete:[row 1,row 2,row 3, row 4, row 5, row 6, row 7, row 41338, row 41339];
@@ -40,16 +41,41 @@ block table oftype TableInterpreter{
     header:true;
     columns:
     [
-        'year' oftype text,
-        'month' oftype text,
-        'goods_id' oftype text,
+        'year' oftype onlypositive,
+        'month' oftype regex_1,
+        'goods_id' oftype regex_2,
         'goods_name' oftype text,
         'goods_source' oftype text,
         'abroad' oftype text,
-        'total' oftype text,
+        'total' oftype onlypositive,
     ]
     ;
 }
+
+valuetype onlypositive oftype integer{
+    constraints : [rangeconstraint];    
+}
+constraint rangeconstraint oftype RangeConstraint{
+    lowerBound:0;
+    lowerBoundInclusive:true;
+}
+
+valuetype regex_1 oftype text{
+    constraints : [regex_constraint_1];
+}
+constraint regex_constraint_1 oftype RegexConstraint{
+    regex: /\b(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktber|November|Dezember)\b/;
+}
+
+valuetype regex_2 oftype text{
+    constraints:[regex_constraint_2];
+}
+constraint regex_constraint_2 oftype RegexConstraint{
+    regex: /^NST7-[0-9A-]{3}$/;
+}
+
+
+
 block op oftype SQLiteLoader{
     file:'./goodsTransportedByTrain.sqlite';
     table: "goods";
