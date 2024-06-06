@@ -16,18 +16,15 @@ GDP is a growth analysis factor and climate change is a probelem needed to be ta
 
 <!-- Describe each datasources you plan to use in a section. Use the prefic "DatasourceX" where X is the id of the datasource. -->
 
-### Datasource1: Kaggle
-* Data Type: CSV
-* API link: kaggle datasets download -d rajkumarpandey02/2023-world-population-by-country
+### source1: GDP Data of countries(World Bank IBRD-IDA) 
+url: https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?end=2022&start=2021&view=chart(https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?end=2022&start=2021&view=chart) 
+licence:CC-BY 4.0 https://datacatalog.worldbank.org/publiclicenses#cc-by (https://datacatalog.worldbank.org/public-licenses#cc-by)
 
-The US Census Bureau's world population clock estimated that the global population as of September 2022 was 7,922,312,800 people and was expected to reach 8 billion by mid-November of 2022. This total far exceeds the 2015 world population of 7.2 billion. The world's population continues to increase by roughly 140 people per minute, with births outweighing deaths in most countries.
 
-### Datasource2: Kaggle
-* Data Type: CSV
-* API link: kaggle datasets download -d berkeleyearth/climate-change-earth-surface-temperature-data
+### source2: Surface temperature data of countries(GlobalDataLab)
+url:https://globaldatalab.org/geos/download/surfacetempyear/(https://globaldatalab.org/geos/download/surfacetempyear/)
 
 Some say climate change is the biggest threat of our age while others say it’s a myth based on dodgy science. We are turning some of the data over to you so you can form your own view.
-
 
 ## Work Packages
 
@@ -38,5 +35,4 @@ Some say climate change is the biggest threat of our age while others say it’s
 3. numpy
 4. Seaborn
 5. Matplotlib
-6. Jayvee
    
