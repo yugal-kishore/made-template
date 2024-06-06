@@ -2,15 +2,15 @@
 
 ## Title
 <!-- Give your project a short title. -->
-Climate change and it's impact by population
+Climate change and it's impact by GDP of the country
 ## Main Question
 
 <!-- Think about one main question you want to answer based on the data. -->
-1.Is there a direct connection between the Change in climate and the rise in population?
+1.Is there a direct connection between the Change in surface and the GDP of a Nation?
 ## Description
 
 <!-- Describe your data science project in max. 200 words. Consider writing about why and how you attempt it. -->
-Population and climate change are two very important porblems needed to be solved. This project tries to peek into the relation between the two problems if they are correlated. 
+GDP is a growth analysis factor and climate change is a probelem needed to be tackled, This project tries to peek into the relation between the two concepts and see if they are correlated. 
 
 ## Datasources
 
