@@ -1,0 +1,48 @@
+pipeline temperatures{
+    ip ->
+    zip_extractor ->
+    file_picker ->
+    txtfile->
+    csv_interpreter ->
+    table_interpreter ->
+    op;
+
+block ip oftype HttpExtractor{
+    url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
+}
+
+block zip_extractor oftype ArchiveInterpreter{
+    archiveType:"zip";
+}
+
+block file_picker oftype FilePicker{
+    path: "./data.csv";
+}
+
+block txtfile oftype TextFileInterpreter{
+    encoding:'latin3';
+}
+
+block csv_interpreter oftype CSVInterpreter{
+    delimiter: ';'; 
+}
+
+block table_interpreter oftype TableInterpreter{
+    header: true;
+    columns:
+    [
+        "Geraet" oftype decimal,
+        "Hersteller" oftype decimal,
+        "Model" oftype decimal,
+        "Monat" oftype integer,
+        "Temperatur in °C (DWD)" oftype decimal,
+        "Batterietemperatur in °C" oftype decimal,
+    ];
+
+}
+
+block op oftype SQLiteLoader{
+    table: 'temperatures';
+    file: 'temmperatures.sqlite';
+}
+}
