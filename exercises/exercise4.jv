@@ -4,7 +4,11 @@ pipeline temperatures{
     file_picker ->
     txtfile->
     csv_interpreter ->
+    cellwriter ->
     table_interpreter ->
+    transform1 ->
+    transform2 ->
+
     op;
 
 block ip oftype HttpExtractor{
@@ -27,6 +31,30 @@ block csv_interpreter oftype CSVInterpreter{
     delimiter: ';'; 
 }
 
+block cellwriter oftype CellWriter{
+    at: range A1:F1;
+    write:['id','producer','model','month','temperature','battery_temperature'];
+}
+
+transform celsius_to_fahr{
+    from celsius oftype decimal;
+    to  fahrenheit oftype decimal;
+    fahrenheit:(celsius*9/5)+32;
+}
+
+block transform1 oftype TableTransformer{
+    inputColumns:['temperature',];
+    outputColumn:'temperature';
+    use: celsius_to_fahr;
+}
+
+block transform2 oftype TableTransformer{
+    inputColumns:['battery_temperature',];
+    outputColumn:'battery_temperature';
+    use: celsius_to_fahr;
+
+}
+
 block table_interpreter oftype TableInterpreter{
     header: true;
     columns:
@@ -43,6 +71,6 @@ block table_interpreter oftype TableInterpreter{
 
 block op oftype SQLiteLoader{
     table: 'temperatures';
-    file: 'temmperatures.sqlite';
+    file: './temmperatures.sqlite';
 }
 }
