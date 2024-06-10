@@ -5,6 +5,7 @@ pipeline temperatures{
     txtfile->
     csv_interpreter ->
     cellwriter ->
+    cellwriter2 ->
     table_interpreter ->
     transform1 ->
     transform2 ->
@@ -32,8 +33,14 @@ block csv_interpreter oftype CSVInterpreter{
 }
 
 block cellwriter oftype CellWriter{
-    at: range A1:F1;
-    write:['id','producer','model','month','temperature','battery_temperature'];
+    at: range A1:E1;
+    write:['id','producer','model','month','temperature',];
+}
+
+
+block cellwriter2 oftype CellWriter{
+    at: cell J1;
+    write:['battery_temperature',];
 }
 
 transform celsius_to_fahr{
