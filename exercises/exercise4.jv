@@ -1,24 +1,14 @@
-valuetype valid_id oftype integer{
-    constraints:[above_0,];
-}
-
-constraint above_0 oftype RangeConstraint{
-    lowerBound:1;
-    lowerBoundInclusive:true;
-}
-
-pipeline temperatures{
+pipeline temperatures {
     ip ->
     zip_extractor ->
     file_picker ->
-    txtfile->
+    txtfile ->
     csv_interpreter ->
     cellwriter ->
     cellwriter2 ->
     table_interpreter ->
     transform1 ->
     transform2 ->
-
     op;
 
     block ip oftype HttpExtractor{
@@ -30,11 +20,10 @@ pipeline temperatures{
     }
 
     block file_picker oftype FilePicker{
-        path: "./data.csv";
+        path: "/data.csv";
     }
 
     block txtfile oftype TextFileInterpreter{
-        encoding:'latin3';
     }
 
     block csv_interpreter oftype CSVInterpreter{
@@ -75,8 +64,8 @@ pipeline temperatures{
         header: true;
         columns:
         [
-            "id" oftype valid_id,
-            "producer" oftype decimal,
+            "id" oftype valid,
+            "producer" oftype text,
             "model" oftype decimal,
             "month" oftype integer,
             "temperature" oftype decimal,
@@ -87,6 +76,14 @@ pipeline temperatures{
 
     block op oftype SQLiteLoader{
         table: "temperatures";
-        file: “temperatures.sqlite”;
+        file: "temperatures.sqlite";
     }
 }
+
+
+valuetype valid oftype integer{
+constraints:[above_0,];
+}
+
+constraint above_0 on integer:
+value >=0;
