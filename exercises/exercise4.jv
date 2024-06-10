@@ -66,12 +66,12 @@ block table_interpreter oftype TableInterpreter{
     header: true;
     columns:
     [
-        "Geraet" oftype decimal,
-        "Hersteller" oftype decimal,
-        "Model" oftype decimal,
-        "Monat" oftype integer,
-        "Temperatur in °C (DWD)" oftype decimal,
-        "Batterietemperatur in °C" oftype decimal,
+        "id" oftype integer,
+        "producer" oftype decimal,
+        "model" oftype decimal,
+        "month" oftype integer,
+        "temperature" oftype decimal,
+        "battery_temperature" oftype decimal,
     ];
 
 }
