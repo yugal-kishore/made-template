@@ -9,7 +9,6 @@ pipeline temperatures{
     table_interpreter ->
     transform1 ->
     transform2 ->
-
     op;
 
 block ip oftype HttpExtractor{
