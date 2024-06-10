@@ -1,3 +1,12 @@
+valuetype valid_id oftype integer{
+    constraints:[above_0,];
+}
+
+constraint above_0 oftype RangeConstraint{
+    lowerBound:1;
+    lowerBoundInclusive:true;
+}
+
 pipeline temperatures{
     ip ->
     zip_extractor ->
@@ -9,74 +18,75 @@ pipeline temperatures{
     table_interpreter ->
     transform1 ->
     transform2 ->
+
     op;
 
-block ip oftype HttpExtractor{
-    url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
-}
+    block ip oftype HttpExtractor{
+        url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
+    }
 
-block zip_extractor oftype ArchiveInterpreter{
-    archiveType:"zip";
-}
+    block zip_extractor oftype ArchiveInterpreter{
+        archiveType:"zip";
+    }
 
-block file_picker oftype FilePicker{
-    path: "./data.csv";
-}
+    block file_picker oftype FilePicker{
+        path: "./data.csv";
+    }
 
-block txtfile oftype TextFileInterpreter{
-    encoding:'latin3';
-}
+    block txtfile oftype TextFileInterpreter{
+        encoding:'latin3';
+    }
 
-block csv_interpreter oftype CSVInterpreter{
-    delimiter: ';'; 
-}
+    block csv_interpreter oftype CSVInterpreter{
+        delimiter: ';'; 
+    }
 
-block cellwriter oftype CellWriter{
-    at: range A1:E1;
-    write:['id','producer','model','month','temperature',];
-}
+    block cellwriter oftype CellWriter{
+        at: range A1:E1;
+        write:['id','producer','model','month','temperature',];
+    }
 
 
-block cellwriter2 oftype CellWriter{
-    at: cell J1;
-    write:['battery_temperature',];
-}
+    block cellwriter2 oftype CellWriter{
+        at: cell J1;
+        write:['battery_temperature',];
+    }
 
-transform celsius_to_fahr{
-    from celsius oftype decimal;
-    to  fahrenheit oftype decimal;
-    fahrenheit:(celsius*9/5)+32;
-}
+    transform celsius_to_fahr{
+        from celsius oftype decimal;
+        to  fahrenheit oftype decimal;
+        fahrenheit:(celsius*9/5)+32;
+    }
 
-block transform1 oftype TableTransformer{
-    inputColumns:['temperature',];
-    outputColumn:'temperature';
-    use: celsius_to_fahr;
-}
+    block transform1 oftype TableTransformer{
+        inputColumns:['temperature',];
+        outputColumn:'temperature';
+        use: celsius_to_fahr;
+    }
 
-block transform2 oftype TableTransformer{
-    inputColumns:['battery_temperature',];
-    outputColumn:'battery_temperature';
-    use: celsius_to_fahr;
+    block transform2 oftype TableTransformer{
+        inputColumns:['battery_temperature',];
+        outputColumn:'battery_temperature';
+        use: celsius_to_fahr;
 
-}
+    }
 
-block table_interpreter oftype TableInterpreter{
-    header: true;
-    columns:
-    [
-        "id" oftype integer,
-        "producer" oftype decimal,
-        "model" oftype decimal,
-        "month" oftype integer,
-        "temperature" oftype decimal,
-        "battery_temperature" oftype decimal,
-    ];
+    block table_interpreter oftype TableInterpreter{
+        header: true;
+        columns:
+        [
+            "id" oftype valid_id,
+            "producer" oftype decimal,
+            "model" oftype decimal,
+            "month" oftype integer,
+            "temperature" oftype decimal,
+            "battery_temperature" oftype decimal,
+        ];
 
-}
+    }
 
-block op oftype SQLiteLoader{
-    table: 'temperatures';
-    file: './temmperatures.sqlite';
-}
+    block op oftype SQLiteLoader{
+        table: 'temperatures';
+        file: './temmperatures.sqlite';
+    }
 }
