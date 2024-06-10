@@ -1,88 +1,88 @@
-pipeline temperatures {
-    ip ->
-    zip_extractor ->
-    file_picker ->
-    txtfile ->
-    csv_interpreter ->
-    cellwriter ->
-    cellwriter2 ->
-    table_interpreter ->
-    transform1 ->
-    transform2 ->
-    op;
+// Building as per the documentation
 
-    block ip oftype HttpExtractor{
-        url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
+pipeline TemperaturesPipeline {
+    HttpExtractor -> ZipExtractor ->
+    TemperatureFilePicker -> TextFileExtractor ->
+    CSVExtractor -> FirstColumnRenamer -> SecondColumnRenamer -> ColumnDeleter ->
+    TemperatureTableInterpreter -> TemperaturTransformer -> BatterietemperaturTransformer -> 
+    TemperatureLoader;
+
+    block HttpExtractor oftype HttpExtractor {
+        url : "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
     }
 
-    block zip_extractor oftype ArchiveInterpreter{
-        archiveType:"zip";
+    // Use the inbuilt zip archiver
+    block ZipExtractor oftype ArchiveInterpreter {
+        archiveType : "zip";
     }
 
-    block file_picker oftype FilePicker{
-        path: "/data.csv";
+    // use relative path of csv file
+    block TemperatureFilePicker oftype FilePicker  {
+        path : "/data.csv";
     }
 
-    block txtfile oftype TextFileInterpreter{
+    block TextFileExtractor oftype TextFileInterpreter {
     }
 
-    block csv_interpreter oftype CSVInterpreter{
-        delimiter: ';'; 
+    block CSVExtractor oftype CSVInterpreter {
+        delimiter: ";";
     }
 
-    block cellwriter oftype CellWriter{
+    block FirstColumnRenamer oftype CellWriter {
         at: range A1:E1;
-        write:['id','producer','model','month','temperature',];
+        write : ["id", "producer", "model", "month", "temperature"];
     }
 
-
-    block cellwriter2 oftype CellWriter{
+    block SecondColumnRenamer oftype CellWriter {
         at: cell J1;
-        write:['battery_temperature',];
+        write : ["battery_temperature"];
     }
 
-    transform celsius_to_fahr{
-        from celsius oftype decimal;
-        to  fahrenheit oftype decimal;
-        fahrenheit:(celsius*9/5)+32;
+
+    block ColumnDeleter oftype ColumnDeleter {
+        delete : [column F, column G, column H, column I];
     }
 
-    block transform1 oftype TableTransformer{
-        inputColumns:['temperature',];
-        outputColumn:'temperature';
-        use: celsius_to_fahr;
-    }
 
-    block transform2 oftype TableTransformer{
-        inputColumns:['battery_temperature',];
-        outputColumn:'battery_temperature';
-        use: celsius_to_fahr;
-
-    }
-
-    block table_interpreter oftype TableInterpreter{
-        header: true;
-        columns:
-        [
-            "id" oftype valid,
+    block TemperatureTableInterpreter oftype TableInterpreter {
+        header: false;
+        columns: [
+            "id" oftype PositiveValueType,
             "producer" oftype text,
-            "model" oftype decimal,
-            "month" oftype integer,
+            "model" oftype text,
+            "month" oftype PositiveValueType,
             "temperature" oftype decimal,
             "battery_temperature" oftype decimal,
         ];
-
     }
 
-    block op oftype SQLiteLoader{
-        table: "temperatures";
-        file: "temperatures.sqlite";
+    block TemperaturTransformer oftype TableTransformer {
+        inputColumns : ["temperature"];
+        outputColumn : "temperature";
+        use : CelsiusToFahrenheit;
     }
+
+    block BatterietemperaturTransformer oftype TableTransformer {
+        inputColumns : ["battery_temperature"];
+        outputColumn : "battery_temperature";
+        use : CelsiusToFahrenheit;
+    }
+
+    block TemperatureLoader oftype SQLiteLoader {
+        table: 'temperatures';
+        file: 'temperatures.sqlite';
+    }
+
+    transform CelsiusToFahrenheit {
+        from Celsius oftype decimal;
+        to Fahrenheit oftype decimal;
+        Fahrenheit: (Celsius * 9/5) + 32;
+ }
 }
 
-
-valuetype valid oftype integer{
-constraints:[above_0,];
+valuetype PositiveValueType oftype integer {
+    constraints : [ PositiveValueConstraint ];
 }
-constraint above_0 on integer:
-value >=0;
+
+constraint PositiveValueConstraint on integer :
+    value >= 0;
