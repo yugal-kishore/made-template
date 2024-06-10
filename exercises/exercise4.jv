@@ -6,6 +6,7 @@ pipeline temperatures {
     csv_interpreter ->
     cellwriter ->
     cellwriter2 ->
+    coldel ->
     table_interpreter ->
     transform1 ->
     transform2 ->
@@ -41,6 +42,10 @@ pipeline temperatures {
         write:['battery_temperature',];
     }
 
+    block coldel oftype ColumnDeleter{
+        delete: [column F, column G, column H, column I];
+    }
+
     transform celsius_to_fahr{
         from celsius oftype decimal;
         to  fahrenheit oftype decimal;
@@ -66,8 +71,8 @@ pipeline temperatures {
         [
             "id" oftype valid,
             "producer" oftype text,
-            "model" oftype decimal,
-            "month" oftype integer,
+            "model" oftype text,
+            "month" oftype valid,
             "temperature" oftype decimal,
             "battery_temperature" oftype decimal,
         ];
