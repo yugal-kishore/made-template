@@ -86,7 +86,7 @@ pipeline temperatures{
     }
 
     block op oftype SQLiteLoader{
-        table: 'temperatures';
-        file: './temperatures.sqlite';
+        table: "temperatures";
+        file: “temperatures.sqlite”;
     }
 }
