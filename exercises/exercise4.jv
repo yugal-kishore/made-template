@@ -84,6 +84,5 @@ pipeline temperatures {
 valuetype valid oftype integer{
 constraints:[above_0,];
 }
-
 constraint above_0 on integer:
 value >=0;
