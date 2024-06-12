@@ -19,7 +19,7 @@ GDP is a growth analysis factor and climate change is a probelem needed to be ta
 ### source1: World GDP by country(KAGGLE) 
 url: https://www.kaggle.com/datasets/annafabris/world-gdp-by-country-1960-2022?select=GDP.csv
 
-licence:CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+licence: CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
 
 This dataset contains the GDP of every country from 1960 to 2022.
 
