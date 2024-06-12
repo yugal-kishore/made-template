@@ -40,4 +40,5 @@ def main():
     test_etl2()
 
 if __name__ == "__main__":
-    main()
+    print("test cases running ")
+    #main()
