@@ -2,11 +2,11 @@
 
 ## Title
 <!-- Give your project a short title. -->
-Climate change and it's impact by GDP of the country
+Climate change and how it's impacted by GDP of the country
 ## Main Question
 
 <!-- Think about one main question you want to answer based on the data. -->
-1.Is there a direct connection between the Change in surface and the GDP of a Nation?
+1.Is there a direct connection between the Change in surface temperature and the GDP of a Nation?
 ## Description
 
 <!-- Describe your data science project in max. 200 words. Consider writing about why and how you attempt it. -->
@@ -16,13 +16,20 @@ GDP is a growth analysis factor and climate change is a probelem needed to be ta
 
 <!-- Describe each datasources you plan to use in a section. Use the prefic "DatasourceX" where X is the id of the datasource. -->
 
-### source1: GDP Data of countries(World Bank IBRD-IDA) 
-url: https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?end=2022&start=2021&view=chart(https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?end=2022&start=2021&view=chart) 
-licence:CC-BY 4.0 https://datacatalog.worldbank.org/publiclicenses#cc-by (https://datacatalog.worldbank.org/public-licenses#cc-by)
+### source1: World GDP by country(KAGGLE) 
+url: https://www.kaggle.com/datasets/annafabris/world-gdp-by-country-1960-2022?select=GDP.csv
+
+licence:CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+
+This dataset contains the GDP of every country from 1960 to 2022.
+
+The GDP figures are measured in current U.S. dollars and represent the sum of gross value added by all resident producers in each country's economy. This encompasses not only the production value but also takes into account any product taxes while subtracting subsidies that are not included in the value of products. 
 
 
-### source2: Surface temperature data of countries(GlobalDataLab)
-url:https://globaldatalab.org/geos/download/surfacetempyear/(https://globaldatalab.org/geos/download/surfacetempyear/)
+### source2: Climate-change-indicators(KAGGLE)
+url:https://www.kaggle.com/datasets/tarunrm09/climate-change-indicators/data?select=climate_change_indicators.csv
+
+license: CC0: Public Domain (https://creativecommons.org/publicdomain/zero/1.0/)
 
 Some say climate change is the biggest threat of our age while others say it’s a myth based on dodgy science. We are turning some of the data over to you so you can form your own view.
 
@@ -30,9 +37,9 @@ Some say climate change is the biggest threat of our age while others say it’s
 
 <!-- List of work packages ordered sequentially, each pointing to an issue with more details. -->
 
-1. Python 3
+1. Python3
 2. Pandas
 3. numpy
-4. Seaborn
-5. Matplotlib
+4. sqlite3
+5. KaggleApi
    

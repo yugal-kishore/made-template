@@ -54,7 +54,7 @@ def etl2(data_dir):
     temperature data processing.
     """
     try:
-        csv_filename = os.path.join(data_dir, 'CC.csv')
+        csv_filename = os.path.join(data_dir, 'climate-change-indicators.csv')
         df = pd.read_csv(csv_filename)
         if df.empty:
             raise ValueError(f"No data found in file {csv_filename}.")
@@ -99,7 +99,7 @@ def main():
         os.makedirs(data_dir)
 
     dataset1_id = 'annafabris/world-gdp-by-country-1960-2022'
-    dataset2_id = 'princeiornongu/merged-cc'
+    dataset2_id = 'tarunrm09/climate-change-indicators/data'
 
     if download_and_extract_dataset(dataset1_id, data_dir):
         df1 = etl1(data_dir)
