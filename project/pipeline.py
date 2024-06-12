@@ -41,7 +41,7 @@ def etl1(data_dir):
             raise ValueError(f"Missing expected columns: {missing_cols}")
         
         df = df[cols_to_keep]
-        countries_to_study = ['Germany', 'Ireland', 'Poland', 'Greece', 'Italy']
+        countries_to_study = ['Germany', 'Ireland', 'France', 'Greece', 'Italy']
         df = df[df['Country'].isin(countries_to_study)]
         return df
 
@@ -49,39 +49,43 @@ def etl1(data_dir):
         print(f"Error processing GDP data: {e}")
         return None
 
+def rename_columns(df):
+    if df is None:
+        raise ValueError("DataFrame is None, cannot rename columns.")
+    new_column_names = {col: int(col[1:]) for col in df.columns if col.startswith('F')}
+    df.rename(columns=new_column_names, inplace=True)
+
+
 def etl2(data_dir):
-    """
-    temperature data processing.
-    """
+    file_path = os.path.join(data_dir, 'climate_change_indicators.csv')
+    
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"File not found: {file_path}")
+    
     try:
-        csv_filename = os.path.join(data_dir, 'climate-change-indicators.csv')
-        df = pd.read_csv(csv_filename)
-        if df.empty:
-            raise ValueError(f"No data found in file {csv_filename}.")
-    except pd.errors.ParserError as pe:
-        print(f"Error tokenizing data in file {csv_filename}: {pe}")
-        return None
+        df = pd.read_csv(file_path)
     except Exception as e:
-        print(f"Error reading the file {csv_filename}: {e}")
-        return None
+        raise ValueError(f"Error reading CSV file {file_path}: {e}")
 
-    year_range = range(1961, 2023)
-    years = [str(i) for i in year_range]
+    if df is None or df.empty:
+        raise ValueError("DataFrame is empty or None after reading the CSV file.")
+    
+    print("Columns in DataFrame before renaming:", df.columns.tolist())
+    rename_columns(df)
+    print("Columns in DataFrame after renaming:", df.columns.tolist())
+
     cat_cols = ['Country']
+    years = [year for year in range(1961, 2023) if year in df.columns]
     cols_to_keep = cat_cols + years
-
-    # Ensure columns exist before filtering
-    missing_cols = [col for col in cols_to_keep if col not in df.columns]
+    missing_cols = [col for col in range(1961, 2023) if col not in df.columns]
+    
     if missing_cols:
-        raise ValueError(f"Missing expected columns: {missing_cols}")
-
-    df.dropna(inplace=True)
+        raise KeyError(f"Columns {missing_cols} not found in DataFrame")
     df = df[cols_to_keep]
-    countries_to_study = ['Germany', 'Ireland', 'Poland', 'Greece', 'Italy']
+
+    countries_to_study = ['Germany', 'Ireland', 'France', 'Greece', 'Italy']
     df = df[df['Country'].isin(countries_to_study)]
-
     return df
-
 
 def sql_load(df, path, table):
     """
@@ -99,7 +103,7 @@ def main():
         os.makedirs(data_dir)
 
     dataset1_id = 'annafabris/world-gdp-by-country-1960-2022'
-    dataset2_id = 'tarunrm09/climate-change-indicators/data'
+    dataset2_id = 'tarunrm09/climate-change-indicators'
 
     if download_and_extract_dataset(dataset1_id, data_dir):
         df1 = etl1(data_dir)
