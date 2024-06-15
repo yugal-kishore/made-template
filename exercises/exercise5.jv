@@ -54,8 +54,8 @@ pipeline stops_pipeline{
         columns:[
             'stop_id' oftype integer,
             'stop_name' oftype text,
-            'stop_lat' oftype coords,
-            'stop_lon' oftype coords,
+            'stop_lat' oftype decimal,
+            'stop_lon' oftype decimal,
             'zone_id' oftype valid_zone,
         ];
     }
