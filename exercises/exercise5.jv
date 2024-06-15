@@ -30,20 +30,32 @@ pipeline stops_pipeline{
         delimiter:",";
     }
 
-     valuetype valid_zone oftype integer{
+    valuetype valid_zone oftype integer{
         constraints:[zone_1645,];
     }
 
     constraint zone_1645 on integer:
         value == 1645;
 
+    valuetype coords oftype integer{
+        constraints:[valid_range_for_coords,];
+    }
+    constraint valid_range_for_coords oftype RangeConstraint{
+        lowerBound:-90;
+        lowerBoundInclusive: true;
+        upperBound: 90;
+        upperBoundInclusive: true;
+    }
+        
+
+
     block table_intrepret oftype TableInterpreter{
         header : true ;
         columns:[
             'stop_id' oftype integer,
             'stop_name' oftype text,
-            'stop_lat' oftype decimal,
-            'stop_lon' oftype decimal,
+            'stop_lat' oftype coords,
+            'stop_lon' oftype coords,
             'zone_id' oftype valid_zone,
         ];
     }
