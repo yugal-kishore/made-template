@@ -37,11 +37,11 @@ pipeline stops_pipeline{
     constraint zone_1645 on integer:
         value == 1645;
 
-    valuetype coords oftype integer{
+    valuetype coords oftype decimal{
         constraints:[valid_range_for_coords,];
     }
-    
-    constraint valid_range_for_coords on integer:
+
+    constraint valid_range_for_coords on decimal:
         value >=-90 and value <=90;
         
     block table_intrepret oftype TableInterpreter{
