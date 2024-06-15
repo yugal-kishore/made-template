@@ -22,7 +22,6 @@ pipeline stops_pipeline{
     }
 
     block txtfile oftype TextFileInterpreter{
-        encoding :'latin3';
     }
 
     block gfts_interpret oftype CSVInterpreter{
