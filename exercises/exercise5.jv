@@ -43,7 +43,7 @@ pipeline stops_pipeline{
 
     block op oftype SQLiteLoader{
         table:'stops';
-        file:'./gtfs.sqlite';
+        file:'./gfts.sqlite';
     }
 
     valuetype valid_zone oftype integer{
