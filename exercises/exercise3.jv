@@ -53,11 +53,11 @@ block table oftype TableInterpreter{
 }
 
 valuetype onlypositive oftype integer{
-    constraints : [rangeconstraint,];    
+    constraints : [rangeconstraint,];  
 }
 constraint rangeconstraint oftype RangeConstraint{
     lowerBound:0;
-    lowerBoundInclusive:true;
+    lowerBoundInclusive:false;
 }
 
 valuetype regex_1 oftype text{
