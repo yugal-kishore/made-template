@@ -63,14 +63,14 @@ valuetype regex_1 oftype text{
     constraints : [regex_constraint_1,];
 }
 constraint regex_constraint_1 oftype RegexConstraint{
-    regex: ^(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktber|November|Dezember)$;
+    regex: /^(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktber|November|Dezember)$/;
 }
 
 valuetype regex_2 oftype text{
     constraints:[regex_constraint_2,];
 }
 constraint regex_constraint_2 oftype RegexConstraint{
-    regex: ^NST7-[0-9A-Z]{3}$;
+    regex: /^NST7-[0-9A-Z]{3}$/;
 }
 
 block op oftype SQLiteLoader{
