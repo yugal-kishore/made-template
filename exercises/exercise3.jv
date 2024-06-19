@@ -41,7 +41,7 @@ block table oftype TableInterpreter{
     columns:
     [
         'year' oftype onlypositive,
-        'month' oftype regex_1,
+        'month' oftype German_months,
         'goods_id' oftype regex_2,
         'goods_name' oftype text,
         'goods_source' oftype text,
@@ -56,14 +56,13 @@ valuetype onlypositive oftype integer{
 }
 constraint rangeconstraint oftype RangeConstraint{
     lowerBound:0;
-    lowerBoundInclusive:false;
 }
 
-valuetype regex_1 oftype text{
-    constraints : [regex_constraint_1,];
-}
-constraint regex_constraint_1 oftype RegexConstraint{
-    regex: /\b(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)\b/;
+valuetype German_months oftype text {
+		constraints: [ regex_1 ];
+	}
+constraint regex_1 oftype AllowlistConstraint {
+		allowlist: ["Januar", "Februar", "März", "April", "Mai", "Juni", "July", "August", "September", "Oktober", "November", "Dezember"];
 }
 
 valuetype regex_2 oftype text{
