@@ -63,7 +63,7 @@ valuetype regex_1 oftype text{
     constraints : [regex_constraint_1,];
 }
 constraint regex_constraint_1 oftype RegexConstraint{
-    regex: /^(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktber|November|Dezember)$/;
+    regex: /\b(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)\b/;
 }
 
 valuetype regex_2 oftype text{
