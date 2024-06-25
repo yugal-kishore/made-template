@@ -16,13 +16,17 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '12.22.9'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd project
+          npm install
 
       - name: Run tests
-        run: npm test
+        run: |
+          cd project
+          npm test
 
       - name: Fetch requirements
         run: |
