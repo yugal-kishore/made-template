@@ -1,40 +1,26 @@
-name: CI_pipeline
+name: continuous Integration Pipeline
 
-on: push
+on: [push, pull_request]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+    - name: Repository Checkout
+      uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v3
-        with: 
-          python-version: '3.10.12'
+    - name: Python Setup
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.12
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '12.22.9'
-
-      - name: Install dependencies
-        run: |
-          cd project
-          npm install
-
-      - name: Run tests
-        run: |
-          cd project
-          npm test
-
-      - name: Fetch requirements
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r project/requirements.txt
-
-      - name: Make tests.sh executable
-        run: chmod +x project/tests.sh
-
-      - name: Test Data Pipeline
-        run: project/tests.sh
+    - name: All dependencies Install
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r project/requirements.txt
+        
+    - name: Test and Run
+      run: |
+        chmod +x project/tests.sh
+        project/tests.sh
