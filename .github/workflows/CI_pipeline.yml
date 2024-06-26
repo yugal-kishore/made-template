@@ -27,9 +27,9 @@ jobs:
 
       - name: Set up Kaggle API credentials
         run: |
-          mkdir /home/runner/.kaggle
-          echo "$KAGGLE_API_TOKEN" > /home/runner/.kaggle/kaggle.json
-          chmod 600 /home/runner/.kaggle/kaggle.json
+          mkdir -p ~/.kaggle
+          echo '{"username":"yugalkishore","key":"61f0b5a3da4ff98326476cf287b75015"}' > ~/.kaggle/kaggle.json
+          chmod 600 ~/.kaggle/kaggle.json
 
       - name: Make tests.sh executable & run
         run: |
