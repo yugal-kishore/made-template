@@ -2,15 +2,23 @@ import os
 import pandas as pd
 import kaggle
 import sqlite3
+import json
 
 
 
 def setup_kaggle():
-    """
-    Set up Kaggle API credentials from environment variables.
-    """
-    os.environ['KAGGLE_USERNAME'] = os.getenv('KAGGLE_USERNAME')
-    os.environ['KAGGLE_KEY'] = os.getenv('KAGGLE_KEY')
+    kaggle_config_path = os.path.expanduser("~/.kaggle/kaggle.json")
+    
+    if not os.path.exists(kaggle_config_path):
+        raise FileNotFoundError(f"Kaggle configuration file not found at {kaggle_config_path}")
+    
+    with open(kaggle_config_path, 'r') as f:
+        kaggle_config = json.load(f)
+    
+    if not kaggle_config.get('username') or not kaggle_config.get('key'):
+        raise ValueError("Kaggle credentials are not set correctly in kaggle.json.")
+    
+    kaggle.api.authenticate()
 
 def download_and_extract_dataset(dataset_id, data_dir):
     """
